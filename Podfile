@@ -1,8 +1,6 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '8.0' #links Foundation.framework to targets
 
-ENV['COCOAPODS_DISABLE_STATS'] = 'true'
-
 target 'RequestSwift' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
