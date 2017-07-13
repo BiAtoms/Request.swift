@@ -71,7 +71,7 @@ open class Requester {
         var fd = pollfd()
         memset(&fd, 0, MemoryLayout<pollfd>.stride)
         fd.fd = socket.fileDescriptor
-        fd.events = Int16(POLLOUT)
+        fd.events = Int16(POLLIN)
         try ing { poll(&fd, 1, Int32(timeout * 1000)) }
     }
 }
