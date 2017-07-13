@@ -24,7 +24,7 @@ open class Client {
     }
     
     
-    func request(_ url: String, method: Method = .get, parameters: Parameters? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: Headers? = nil)
+    open func request(_ url: String, method: Method = .get, parameters: Parameters? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: Headers? = nil)
         -> Requester
     {
         var url = url
@@ -49,13 +49,6 @@ open class Client {
         return requester
     }
     
-}
-
-extension String: ParameterEncoding {
-    public func encode(_ request: Request, with parameters: Parameters?) {
-        URLEncoding.queryString.encode(request, with: parameters)
-        request.body = self.bytes
-    }
 }
 
 public enum Method: String {

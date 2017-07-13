@@ -65,7 +65,7 @@ open class Requester {
     }
     
     
-    func hostToIp( _ hostname: String) throws -> String {
+    open func hostToIp( _ hostname: String) throws -> String {
         if let a = gethostbyname(hostname) {
             let b = withUnsafePointer(to: &(a.pointee.h_addr_list.pointee)) {
                 UnsafePointer<UnsafePointer<in_addr>>(OpaquePointer($0)).pointee.pointee
@@ -77,7 +77,8 @@ open class Requester {
         
         throw Request.Error.couldntResolveHost
     }
-    func wait(_ socket: Socket) throws {
+    
+    open func wait(_ socket: Socket) throws {
         var fd = pollfd()
         memset(&fd, 0, MemoryLayout<pollfd>.stride)
         fd.fd = socket.fileDescriptor
