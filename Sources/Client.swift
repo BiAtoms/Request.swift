@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Dispatch
 import SocketSwift
 
 public typealias Headers = [String: String]
@@ -40,7 +41,7 @@ open class Client {
         encoding.encode(request, with: parameters)
         let requester = Requester(request: request)
         
-        queue.asyncAfter(deadline: .now() + 0.01) { 
+        queue.async {
             requester.start()
         }
         

@@ -50,7 +50,7 @@ open class Request {
 
 #if os(Linux)
     internal extension TextCheckingResult {
-        open func rangeAt(_ idx: Int) -> NSRange {
+        internal func rangeAt(_ idx: Int) -> NSRange {
             return self.range(at: idx)
         }
     }

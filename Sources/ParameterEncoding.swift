@@ -147,8 +147,8 @@ public struct URLEncoding: ParameterEncoding {
                 components += queryComponents(fromKey: "\(key)[]", value: value)
             }
         } else if let value = value as? NSNumber {
-            if value.isBool {
-                components.append((escape(key), escape((value.boolValue ? "1" : "0"))))
+            if false { //value.isBool {
+                //components.append((escape(key), escape((value.boolValue ? "1" : "0"))))
             } else {
                 components.append((escape(key), escape("\(value)")))
             }
@@ -329,13 +329,6 @@ public struct JSONEncoding: ParameterEncoding {
         }
     }
 }
-
-// MARK: -
-
-extension NSNumber {
-    fileprivate var isBool: Bool { return CFBooleanGetTypeID() == CFGetTypeID(self) }
-}
-
 
 private extension Data {
     var bytes: [UInt8] {

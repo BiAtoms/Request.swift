@@ -33,10 +33,8 @@ open class Requester {
             let address = try hostToIp(hostname)
             
             try socket.connect(port: port, address: address)
-            
-            var timeout = timeval(tv_sec: self.timeout, tv_usec: 0)
-            
-            try ing { select(socket.fileDescriptor + 1, nil, nil, nil, &timeout) }
+
+            try wait(socket)
             
             let bytes = RequestWriter.write(request: request)
             try socket.write(bytes)
@@ -69,8 +67,8 @@ open class Requester {
         try ing { -1 } //thorws :)
         return ""
     }
-    
-    deinit {
-        print("deinit called")
+    func wait(_ socket: Socket) throws {
+        var timeout = timeval(tv_sec: self.timeout, tv_usec: 0)
+        try ing { select(socket.fileDescriptor + 1, nil, nil, nil, &timeout) }
     }
 }

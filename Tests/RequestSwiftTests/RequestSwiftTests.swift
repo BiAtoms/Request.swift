@@ -19,17 +19,21 @@ class RequestSwiftTests: XCTestCase {
     }
     
     func testExample() {
-        let ex = expectation(description: "sad")
-        client.request("http://google.com/").response { response, error in
-            if let err = error {
-                print(err)
-            } else {
-                print(String(cString: response!.body))
-            }
+        let ex = expectation(description: "example")
+        client.request("http://example.com/", headers: ["Accept": "text/html"]).response { response, error in
+
+            XCTAssertNil(error, "error should be nil")
+            XCTAssertNotNil(response, "response should no be nil")
+            let response = response!
+            XCTAssertEqual(response.statusCode, 200)
+            XCTAssertEqual(response.reasonPhrase, "OK")
+            
+            XCTAssert(String(cString: response.body).contains("<h1>Example Domain</h1>"))
+            
             ex.fulfill()
         }
         
-        waitForExpectations(timeout: 100)
+        waitForExpectations(timeout: 15)
     }
     
     static var allTests = [

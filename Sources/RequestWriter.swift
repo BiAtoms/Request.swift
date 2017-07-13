@@ -26,7 +26,7 @@ import SocketSwift
 open class RequestWriter {
     
     private let request: Request
-    open var version: String { return "1.1" }
+    open var version: String { return "1.0" }
     required public init(request: Request) {
         self.request = request
     }
