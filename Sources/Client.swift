@@ -16,6 +16,8 @@ public typealias Headers = [String: String]
 open class Client {
     var baseUrl: String?
     let queue = DispatchQueue(label: "com.biatoms.request-swift." + UUID().uuidString)
+    var firesImmediately: Bool = true
+    var timeout: Int = 5000 // in ms
     
     public init(baseUrl: String? = nil) {
         self.baseUrl = baseUrl
@@ -39,12 +41,11 @@ open class Client {
         
         let request = Request(method: method, url: url, headers: headers ?? [:], body: [])
         encoding.encode(request, with: parameters)
-        let requester = Requester(request: request)
+        let requester = Requester(request: request, queue: queue, timeout: timeout)
         
-        queue.async {
-            requester.start()
+        if firesImmediately {
+            requester.startAsync()
         }
-        
         return requester
     }
     

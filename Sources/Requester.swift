@@ -7,18 +7,29 @@
 //
 
 import Foundation
+import Dispatch
 import SocketSwift
 
 public typealias ResponseHandler = (Response?, Error?) -> Void
 open class Requester {
-    var timeout = 10
+    open var timeout: Int
+    open var queue: DispatchQueue
     open var request: Request
     open var response: Response?
     open var error: Error?
     open var handler: ResponseHandler? = nil
     
-    public init(request: Request) {
+    
+    public init(request: Request, queue: DispatchQueue, timeout: Int) {
         self.request = request
+        self.queue = queue
+        self.timeout = timeout
+    }
+    
+    open func startAsync() {
+        queue.async {
+            self.start()
+        }
     }
     
     open func start() {
@@ -64,14 +75,15 @@ open class Requester {
             return String(cString: c)
         }
         
-        try ing { -1 } //thorws :)
-        return ""
+        throw Request.Error.couldntResolveHost
     }
     func wait(_ socket: Socket) throws {
         var fd = pollfd()
         memset(&fd, 0, MemoryLayout<pollfd>.stride)
         fd.fd = socket.fileDescriptor
         fd.events = Int16(POLLIN)
-        try ing { poll(&fd, 1, Int32(timeout * 1000)) }
+        if (try ing { poll(&fd, 1, Int32(timeout)) }) == 0 {
+            throw Request.Error.timeout
+        }
     }
 }
