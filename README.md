@@ -4,7 +4,7 @@
 
 # Request.swift
 
-A tiny HTTP client written in swift.
+A tiny (sync/async) HTTP client written in swift.
 
 ## OS
  
@@ -12,7 +12,14 @@ Works in linux, iOS, macOS and tvOS
 
 ## Example
 ```swift
-//TODO: write an example
+client.request("http://example.com", headers: ["Accept": "text/html"]).response { response, error in    
+        if let response = response {
+            print(response.statusCode)
+            print(String(cString: response.body))
+        } else {
+            print(error)
+        }
+    }
 ```
 
 ## Installation
