@@ -68,22 +68,10 @@ open class Requester {
         return ""
     }
     func wait(_ socket: Socket) throws {
-        func FD_ZERO(_ set: UnsafeMutableRawPointer) {
-            memset(set, 0, MemoryLayout<fd_set>.stride)
-        }
-        
-        func FD_SET(_ fd: Int32, _ set: UnsafeMutableRawPointer) {
-            let p = OpaquePointer(set)
-            let p1 = UnsafeMutablePointer<UInt8>(p)
-            let p2 = UnsafeMutableBufferPointer(start: p1, count: MemoryLayout<fd_set>.stride)
-            p2[Int(fd)/8] = p2[Int(fd) / 8] | ( 1 << (UInt8(fd % 8)))
-        }
-
-        var timeout = timeval(tv_sec: self.timeout, tv_usec: 0)
-        var read_fds = fd_set()
-        let fd = socket.fileDescriptor
-        FD_ZERO(&read_fds)
-        FD_SET(fd, &read_fds)
-        try ing { select(fd + 1, &read_fds, nil, nil, &timeout) }
+        var fd = pollfd()
+        memset(&fd, 0, MemoryLayout<pollfd>.stride)
+        fd.fd = socket.fileDescriptor
+        fd.events = Int16(POLLOUT)
+        try ing { poll(&fd, 1, Int32(timeout * 1000)) }
     }
 }
