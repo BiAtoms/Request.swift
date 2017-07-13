@@ -33,10 +33,54 @@ class RequestSwiftTests: XCTestCase {
             ex.fulfill()
         }
         
-        waitForExpectations(timeout: 15)
+        waitForExpectations()
+    }
+    
+    func testErrorTimeout() {
+        let ex = expectation(description: "timeout")
+        client.firesImmediately = false
+        let requester = client.request("http://httpstat.us/200?sleep=1000")
+        requester.timeout = 500 //ms
+        client.firesImmediately = true
+        requester.startAsync()
+        requester.response { response, error in
+
+            XCTAssertNil(response, "response must be nil")
+            XCTAssertNotNil(error, "error must not be nil")
+
+            let err = (error as? Request.Error)
+            XCTAssertNotNil(err)
+            XCTAssertEqual(err, Request.Error.timeout)
+            ex.fulfill()
+        }
+        
+        waitForExpectations()
+    }
+    
+    func testErrorDNS() {
+        let ex = expectation(description: "dns error")
+        client.request("http://aBadDomain.com").response { response, error in
+            XCTAssertNil(response, "response must be nil")
+            XCTAssertNotNil(error, "error must not be nil")
+            
+            let err = (error as? Request.Error)
+            XCTAssertNotNil(err)
+            XCTAssertEqual(err, Request.Error.couldntResolveHost)
+            ex.fulfill()
+        }
+        
+        waitForExpectations()
     }
     
     static var allTests = [
         ("testExample", testExample),
+        ("testErrorTimeout", testErrorTimeout),
+        ("testErrorDNS", testErrorDNS),
         ]
+}
+
+extension XCTestCase {
+    func waitForExpectations() {
+        waitForExpectations(timeout: 1.5)
+    }
 }
