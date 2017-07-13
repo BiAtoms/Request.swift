@@ -10,10 +10,26 @@ import XCTest
 @testable import RequestSwift
 
 class RequestSwiftTests: XCTestCase {
+    struct a {
+        static let client = Client()
+    }
+    
+    var client: Client {
+        return a.client
+    }
     
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let ex = expectation(description: "sad")
+        client.request("http://google.com/").response { response, error in
+            if let err = error {
+                print(err)
+            } else {
+                print(String(cString: response!.body))
+            }
+            ex.fulfill()
+        }
+        
+        waitForExpectations(timeout: 100)
     }
     
     static var allTests = [

@@ -7,6 +7,10 @@ target 'RequestSwift' do
 
   # Pods for RequestSwift
     pod 'Socket.swift', '~> 1.3'
+
+    target 'RequestSwiftTests' do
+      inherit! :search_paths
+    end
 end
 
 #This is just from making project multiplatform. You should not use below code
