@@ -33,11 +33,11 @@ open class Requester {
             let address = try hostToIp(hostname)
             
             try socket.connect(port: port, address: address)
-
-            try wait(socket)
             
             let bytes = RequestWriter.write(request: request)
             try socket.write(bytes)
+            
+            try wait(socket)
             
             self.response = try ResponseParser.parse(socket: socket)
         } catch {
