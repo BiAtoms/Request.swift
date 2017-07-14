@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name             = 'Request.swift'
-    s.version          = '1.0.1'
-    s.summary          = 'A tiny http client written in swift.'
+    s.version          = '1.0.2'
+    s.summary          = 'A (sync/async) tiny http client written in swift.'
     s.homepage         = 'https://github.com/BiAtoms/Request.swift'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
     s.author           = { 'Orkhan Alikhanov' => 'orkhan.alikhanov@gmail.com' }
