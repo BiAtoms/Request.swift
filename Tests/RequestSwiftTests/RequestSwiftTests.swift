@@ -72,6 +72,17 @@ class RequestSwiftTests: XCTestCase {
         waitForExpectations()
     }
     
+    
+    func testUrlEncoding() {
+        let request = Request(method: .get, url: "http://example.com/?q=123&b=32", headers: [:], body: [])
+        URLEncoding.queryString.encode(request, with: ["apple": "ban ana", "ms": "msdn"])
+        XCTAssertEqual(request.url, "http://example.com/?q=123&b=32&apple=ban%20ana&ms=msdn")
+        
+        let request1 = Request(method: .get, url: "http://example.com/", headers: [:], body: [])
+        URLEncoding.httpBody.encode(request1, with: ["apple": "ban ana", "ms": "msdn"])
+        XCTAssertEqual(request1.body, "apple=ban%20ana&ms=msdn".bytes)
+    }
+    
     static var allTests = [
         ("testExample", testExample),
         ("testErrorTimeout", testErrorTimeout),
