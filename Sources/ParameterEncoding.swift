@@ -118,7 +118,7 @@ public struct URLEncoding: ParameterEncoding {
             if var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false), !parameters.isEmpty {
                 let percentEncodedQuery = (urlComponents.percentEncodedQuery.map { $0 + "&" } ?? "") + query(parameters)
                 urlComponents.percentEncodedQuery = percentEncodedQuery
-                request.url = urlComponents.path
+                request.url = urlComponents.url!.absoluteString
             }
         } else {
             if request.headers[.contentLength] == nil {
