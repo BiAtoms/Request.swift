@@ -13,6 +13,7 @@ extension Request {
     public enum Error: Swift.Error {
         case timeout
         case couldntResolveHost
+        case proxyConnectionFailed
     }
     
 }

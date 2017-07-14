@@ -18,7 +18,7 @@ open class Requester {
     open var response: Response?
     open var error: Error?
     open var handler: ResponseHandler? = nil
-    
+    open var proxy: (host: String, port: SocketSwift.Port)? = nil
     
     public init(request: Request, queue: DispatchQueue, timeout: Int) {
         self.request = request
@@ -35,15 +35,8 @@ open class Requester {
     open func start() {
         do {
             let socket = try Socket(.inet)
-            let (hostname, portString) = request.hostnameAndPort
-            var port: SocketSwift.Port = 80
-            if let p = portString {
-                port = Port(p)!
-            }
             
-            let address = try hostToIp(hostname)
-            
-            try socket.connect(port: port, address: address)
+            try connect(socket, request)
             
             let bytes = RequestWriter.write(request: request)
             try socket.write(bytes)
@@ -86,6 +79,29 @@ open class Requester {
         fd.events = Int16(POLLIN)
         if (try ing { poll(&fd, 1, Int32(timeout)) }) == 0 {
             throw Request.Error.timeout
+        }
+    }
+    
+    open func connect(_ socket: Socket, _ request: Request) throws {
+        let (hostname, portString) = request.hostnameAndPort
+        if let proxy = self.proxy {
+            let address = try hostToIp(proxy.host)
+            try socket.connect(port: proxy.port, address: address)
+            let to = hostname + ":" + (portString ?? "80")
+            try socket.write("CONNECT \(to) HTTP/1.0\r\n\r\n".bytes)
+            try wait(socket)
+            let response = try ResponseParser.parse(socket: socket)
+            if response.statusCode != 200 {
+                throw Request.Error.proxyConnectionFailed
+            }
+            
+        } else {
+            var port: SocketSwift.Port = 80
+            if let p = portString {
+                port = Port(p)!
+            }
+            let address = try hostToIp(hostname)
+            try socket.connect(port: port, address: address)
         }
     }
 }
