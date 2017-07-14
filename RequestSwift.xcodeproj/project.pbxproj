@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6C23D28886D4EF22D6C2AE79 /* Pods_RequestSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D592F44FE843AF673A177A6 /* Pods_RequestSwiftTests.framework */; };
+		9D89389A1F190C1A00B387C4 /* RequestMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8938991F190C1A00B387C4 /* RequestMethod.swift */; };
 		9DD75F291F14F3D100378CB7 /* RequestSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD75F1F1F14F3D100378CB7 /* RequestSwift.framework */; };
 		9DD75F2E1F14F3D100378CB7 /* RequestSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD75F2D1F14F3D100378CB7 /* RequestSwiftTests.swift */; };
 		9DD75F301F14F3D100378CB7 /* RequestSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DD75F221F14F3D100378CB7 /* RequestSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -38,6 +39,7 @@
 		5D592F44FE843AF673A177A6 /* Pods_RequestSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RequestSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		640E85F7EF0338593ACB09B1 /* Pods-RequestSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RequestSwift.release.xcconfig"; path = "Pods/Target Support Files/Pods-RequestSwift/Pods-RequestSwift.release.xcconfig"; sourceTree = "<group>"; };
 		69F23C1FDA038D4D69D13DDD /* Pods-RequestSwiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RequestSwiftTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RequestSwiftTests/Pods-RequestSwiftTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9D8938991F190C1A00B387C4 /* RequestMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestMethod.swift; sourceTree = "<group>"; };
 		9DD75F1F1F14F3D100378CB7 /* RequestSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RequestSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DD75F221F14F3D100378CB7 /* RequestSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RequestSwift.h; sourceTree = "<group>"; };
 		9DD75F231F14F3D100378CB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				9DDE0EB21F167A7D00018A69 /* Requester.swift */,
 				9DF98B3D1F18283A005EBAD0 /* RequestError.swift */,
 				9DECC49A1F161EFC0063A9CE /* ParameterEncoding.swift */,
+				9D8938991F190C1A00B387C4 /* RequestMethod.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				9DECC49F1F1621CE0063A9CE /* Request.swift in Sources */,
 				9DDE0EB31F167A7D00018A69 /* Requester.swift in Sources */,
 				9DDE0EB11F16469C00018A69 /* Response.swift in Sources */,
+				9D89389A1F190C1A00B387C4 /* RequestMethod.swift in Sources */,
 				9DD75F3B1F15052000378CB7 /* Client.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

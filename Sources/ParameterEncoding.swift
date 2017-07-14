@@ -231,7 +231,7 @@ public struct URLEncoding: ParameterEncoding {
         #endif
     }
     
-    private func encodesParametersInURL(with method: Method) -> Bool {
+    private func encodesParametersInURL(with method: Request.Method) -> Bool {
         switch destination {
         case .queryString:
             return true

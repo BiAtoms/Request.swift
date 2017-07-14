@@ -24,7 +24,7 @@ open class Client {
     }
     
     
-    open func request(_ url: String, method: Method = .get, parameters: Parameters? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: Headers? = nil)
+    open func request(_ url: String, method: Request.Method = .get, parameters: Parameters? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: Headers? = nil)
         -> Requester
     {
         var url = url
@@ -49,13 +49,4 @@ open class Client {
         return requester
     }
     
-}
-
-public enum Method: String {
-    case get
-    case head
-    case post
-    case delete
-    case patch
-    case put
 }
