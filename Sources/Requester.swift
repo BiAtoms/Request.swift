@@ -51,6 +51,7 @@ open class Requester {
             try wait(socket)
             
             self.response = try ResponseParser.parse(socket: socket)
+            socket.close()
         } catch {
             self.error = error
         }
