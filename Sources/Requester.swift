@@ -11,6 +11,7 @@ import Dispatch
 import SocketSwift
 
 public typealias ResponseHandler = (Response?, Error?) -> Void
+public typealias Proxy = (host: String, port: SocketSwift.Port)
 open class Requester {
     open var timeout: Int
     open var queue: DispatchQueue
@@ -18,12 +19,13 @@ open class Requester {
     open var response: Response?
     open var error: Error?
     open var handler: ResponseHandler? = nil
-    open var proxy: (host: String, port: SocketSwift.Port)? = nil
+    open var proxy: Proxy? = nil
     
-    public init(request: Request, queue: DispatchQueue, timeout: Int) {
+    public init(request: Request, queue: DispatchQueue, timeout: Int, proxy: Proxy?) {
         self.request = request
         self.queue = queue
         self.timeout = timeout
+        self.proxy = proxy
     }
     
     open func startAsync() {
