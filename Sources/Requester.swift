@@ -35,6 +35,7 @@ open class Requester {
     }
     
     open func start() {
+        reset() // Makes sense if start() called second time
         do {
             let socket = try Socket(.inet)
             
@@ -105,5 +106,10 @@ open class Requester {
             let address = try hostToIp(hostname)
             try socket.connect(port: port, address: address)
         }
+    }
+    
+    open func reset() {
+        response = nil
+        error = nil
     }
 }
