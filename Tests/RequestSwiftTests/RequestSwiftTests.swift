@@ -93,6 +93,22 @@ class RequestSwiftTests: XCTestCase {
         request = Request(method: .get, url: "http://example.com")
         XCTAssertEqual(request.path, "/")
     }
+    
+    func testRequestWriter() {
+        let body = "This is request's body"
+        
+        let request = Request(method: .patch, url: "http://www.example.com:443/dir/1/2/search.html?arg=0-a&arg1=1-b", headers: ["User-Agent": "Test"], body: body.bytes)
+        let writer = RequestWriter(request: request)
+        XCTAssertEqual(writer.buildRequestLine(), "PATCH /dir/1/2/search.html?arg=0-a&arg1=1-b HTTP/1.0\r\n")
+        let requestString = "PATCH /dir/1/2/search.html?arg=0-a&arg1=1-b HTTP/1.0\r\n"
+            + "User-Agent: Test\r\n"
+            + "Content-Length: \(body.bytes.count)\r\n"
+            + "Host: www.example.com:443\r\n"
+            + "\r\n"
+            + body
+        XCTAssertEqual(writer.write(), requestString.bytes)
+
+    }
 
     
     static var allTests = [
