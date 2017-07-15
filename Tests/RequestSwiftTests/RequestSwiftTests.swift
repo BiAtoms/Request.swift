@@ -83,6 +83,18 @@ class RequestSwiftTests: XCTestCase {
         XCTAssertEqual(request1.body, "apple=ban%20ana&ms=msdn".bytes)
     }
     
+    func testRequestPath() {
+        var request = Request(method: .get, url: "http://example.com/dir/1/2/search.html?arg=0-a&arg1=1-b")
+        XCTAssertEqual(request.path, "/dir/1/2/search.html?arg=0-a&arg1=1-b")
+        
+        request = Request(method: .get, url: "http://example.com/")
+        XCTAssertEqual(request.path, "/")
+        
+        request = Request(method: .get, url: "http://example.com")
+        XCTAssertEqual(request.path, "/")
+    }
+
+    
     static var allTests = [
         ("testExample", testExample),
         ("testErrorTimeout", testErrorTimeout),
