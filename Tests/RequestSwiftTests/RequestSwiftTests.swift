@@ -100,14 +100,18 @@ class RequestSwiftTests: XCTestCase {
         let request = Request(method: .patch, url: "http://www.example.com:443/dir/1/2/search.html?arg=0-a&arg1=1-b", headers: ["User-Agent": "Test"], body: body.bytes)
         let writer = RequestWriter(request: request)
         XCTAssertEqual(writer.buildRequestLine(), "PATCH /dir/1/2/search.html?arg=0-a&arg1=1-b HTTP/1.0\r\n")
-        let requestString = "PATCH /dir/1/2/search.html?arg=0-a&arg1=1-b HTTP/1.0\r\n"
+        
+        //checking sorted array of written string (sperated by "\n\r") instead of the string itself
+        //since the headers dictionary had elements with different order on every run
+        let writtenStringArray = writer.write().string.components(separatedBy: "\r\n").sorted()
+        let requestStringArray = ("PATCH /dir/1/2/search.html?arg=0-a&arg1=1-b HTTP/1.0\r\n"
             + "User-Agent: Test\r\n"
             + "Content-Length: \(body.bytes.count)\r\n"
             + "Host: www.example.com:443\r\n"
             + "\r\n"
-            + body
-        XCTAssertEqual(writer.write(), requestString.bytes)
-
+            + body).components(separatedBy: "\r\n").sorted()
+        
+        XCTAssertEqual(writtenStringArray, requestStringArray)
     }
 
     
@@ -124,5 +128,11 @@ class RequestSwiftTests: XCTestCase {
 extension XCTestCase {
     func waitForExpectations() {
         waitForExpectations(timeout: 1.5)
+    }
+}
+
+extension Array where Element == UInt8 {
+    var string: String {
+        return String(data: Data(bytes: self, count: self.count), encoding: .utf8)!
     }
 }
