@@ -14,13 +14,13 @@ public typealias Headers = [String: String]
 
 
 open class Client {
-    var baseUrl: String?
-    let queue = DispatchQueue(label: "com.biatoms.request-swift." + UUID().uuidString)
-    var firesImmediately: Bool = true
-    var timeout: Int = 5000 // in ms
+    open var baseUrl: String?
+    open let queue = DispatchQueue(label: "com.biatoms.request-swift." + UUID().uuidString)
+    open var firesImmediately: Bool = true
+    open var timeout: Int = 5000 // in ms
     
-    var usesSystemProxy: Bool = true
-    var proxy: Proxy? = nil
+    open var usesSystemProxy: Bool = true
+    open var proxy: Proxy? = nil
     
     public init(baseUrl: String? = nil, usesSystemProxy: Bool = true) {
         self.baseUrl = baseUrl
