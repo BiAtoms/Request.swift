@@ -48,7 +48,7 @@ open class RequestWriter {
     
     
     internal func buildRequestLine() -> String {
-        return "\(request.method.rawValue.uppercased()) \(request.url) HTTP/\(version)\r\n"
+        return "\(request.method.rawValue.uppercased()) \(request.path) HTTP/\(version)\r\n"
     }
     
     internal func buildHeaderFields() -> String {
