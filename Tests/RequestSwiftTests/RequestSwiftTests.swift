@@ -115,6 +115,9 @@ class RequestSwiftTests: XCTestCase {
         ("testExample", testExample),
         ("testErrorTimeout", testErrorTimeout),
         ("testErrorDNS", testErrorDNS),
+        ("testUrlEncoding", testUrlEncoding),
+        ("testRequestPath", testErrorDNS),
+        ("testRequestWriter", testRequestWriter),
         ]
 }
 
