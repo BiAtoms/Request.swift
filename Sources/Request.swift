@@ -14,8 +14,8 @@ open class Request {
     open var url: String
     open var headers: Headers
     open var body: [Byte]
-    
-    public init(method: Method, url: String, headers: Headers, body: [Byte]) {
+
+    public init(method: Method, url: String, headers: Headers = [:], body: [Byte] = []) {
         self.method = method
         self.url = url
         self.headers = headers
@@ -31,6 +31,12 @@ open class Request {
         }
         let (hostname, port) = self.hostnameAndPort
         headers["Host"] = port != nil ? "\(hostname):\(port!)" : hostname
+    }
+    
+    //https://tools.ietf.org/html/rfc7230#section-5.3.1
+    open var path: String {
+     
+        
     }
     
     open var hostnameAndPort: (hostname: String, port: String?) {
