@@ -55,7 +55,7 @@ Once you have your Swift package set up, adding Request.swift as a dependency is
 
 ```swift
 dependencies: [
-    .Package(url: "https://github.com/BiAtoms/Request.swift.git", majorVersion: 1)
+    .Package(url: "https://github.com/BiAtoms/Request.swift.git", majorVersion: 2)
 ]
 ```
 
