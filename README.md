@@ -37,7 +37,7 @@ To integrate Request.swift into your Xcode project using CocoaPods, specify it i
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
 target '<Your Target Name>' do
-    pod 'Request.swift' ~> '1.1'
+    pod 'Request.swift' ~> '2.0'
 end
 ```
 

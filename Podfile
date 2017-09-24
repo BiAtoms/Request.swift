@@ -6,7 +6,7 @@ target 'RequestSwift' do
   use_frameworks!
 
   # Pods for RequestSwift
-    pod 'Socket.swift', '~> 1.3'
+    pod 'Socket.swift', '~> 2.0'
 
     target 'RequestSwiftTests' do
       inherit! :search_paths

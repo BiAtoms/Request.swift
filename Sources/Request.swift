@@ -37,17 +37,17 @@ open class Request {
     open var path: String {
         let match = Request.firstMatch(pattern: "^(?:http[s]?:\\/\\/)?[^:\\/\\s]+(?::[0-9]+)?(.*)$", in: self.url)
         let url = NSString(string: self.url) //for NSString.substring
-        let path = url.substring(with: match.rangeAt(1))
+        let path = url.substring(with: match.range(at: 1))
        	return path.isEmpty ? "/" : path
     }
     
     open var hostnameAndPort: (hostname: String, port: String?) {
         let match = Request.firstMatch(pattern: "^(?:http[s]?:\\/\\/)?([^:\\/\\s]+)(?::([0-9]+))?", in: self.url)
         let url = NSString(string: self.url) //for NSString.substring
-       	let hostname = url.substring(with: match.rangeAt(1))
+       	let hostname = url.substring(with: match.range(at: 1))
         var port: String? = nil
-        if match.rangeAt(2).location != NSNotFound {
-            port = url.substring(with: match.rangeAt(2))
+        if match.range(at: 2).location != NSNotFound {
+            port = url.substring(with: match.range(at: 2))
         }
         
         return (hostname, port)
@@ -58,14 +58,3 @@ open class Request {
         return regex.firstMatch(in: string, options: [], range: NSRange(location: 0, length: string.characters.count))!
     }
 }
-
-#if os(Linux)
-    private typealias NSTextCheckingResult = TextCheckingResult
-    internal extension TextCheckingResult {
-        internal func rangeAt(_ idx: Int) -> NSRange {
-            return self.range(at: idx)
-        }
-    }
-#endif
-
-
