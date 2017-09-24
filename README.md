@@ -1,6 +1,7 @@
 [![Platform Linux](https://img.shields.io/badge/platform-Linux-green.svg)](#)
 [![Platform](https://img.shields.io/cocoapods/p/Request.swift.svg?style=flat)](https://github.com/BiAtoms/Request.swift)
 [![Cocoapods Compatible](https://img.shields.io/cocoapods/v/Request.swift.svg)](https://cocoapods.org/pods/Request.swift)
+[![Build Status - Master](https://travis-ci.org/BiAtoms/Request.swift.svg?branch=master)](https://travis-ci.org/BiAtoms/Request.swift)
 
 # Request.swift
 
