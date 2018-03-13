@@ -1,19 +1,17 @@
-# Uncomment the next line to define a global platform for your project
-platform :ios, '8.0' #links Foundation.framework to targets
+platform :ios, '8.0' # links Foundation.framework for targets
 
 target 'RequestSwift' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for RequestSwift
-    pod 'Socket.swift', '~> 2.0'
+    pod 'Socket.swift', '~> 2.2'
 
     target 'RequestSwiftTests' do
       inherit! :search_paths
     end
 end
 
-#This is just from making project multiplatform. You should not use below code
+# Below code is just used to make project multi-platform. You won't need it
 post_install do |installer|  
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|

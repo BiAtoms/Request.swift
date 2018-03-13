@@ -11,7 +11,8 @@ import Dispatch
 import SocketSwift
 
 public typealias ResponseHandler = (Response?, Error?) -> Void
-public typealias Proxy = (host: String, port: SocketSwift.Port)
+public typealias Port = SocketSwift.Port
+public typealias Proxy = (host: String, port: Port)
 open class Requester {
     open var timeout: Int
     open var queue: DispatchQueue
@@ -61,35 +62,24 @@ open class Requester {
         }
     }
     
-    
-    open func hostToIp( _ hostname: String) throws -> String {
-        if let a = gethostbyname(hostname) {
-            let b = withUnsafePointer(to: &(a.pointee.h_addr_list.pointee)) {
-                UnsafePointer<UnsafePointer<in_addr>>(OpaquePointer($0)).pointee.pointee
-            }
-            let c = inet_ntoa(b)!
-            
-            return String(cString: c)
-        }
-        
-        throw Request.Error.couldntResolveHost
-    }
-    
     open func wait(_ socket: Socket) throws {
-        var fd = pollfd()
-        memset(&fd, 0, MemoryLayout<pollfd>.stride)
-        fd.fd = socket.fileDescriptor
-        fd.events = Int16(POLLIN)
-        if (try ing { poll(&fd, 1, Int32(timeout)) }) == 0 {
+        guard try socket.wait(for: .read, timeout: TimeInterval(timeout) / 1000) else {
             throw Request.Error.timeout
         }
+    }
+    
+    open func connect(_ socket: Socket, hostname: String, port: Port) throws {
+        guard let address = (try? socket.addresses(for: hostname, port: port))?.first else {
+            throw Request.Error.couldntResolveHost
+        }
+        
+        try socket.connect(address: address)
     }
     
     open func connect(_ socket: Socket, _ request: Request) throws {
         let (hostname, portString) = request.hostnameAndPort
         if let proxy = self.proxy {
-            let address = try hostToIp(proxy.host)
-            try socket.connect(port: proxy.port, address: address)
+            try connect(socket, hostname: proxy.host, port: proxy.port)
             let to = hostname + ":" + (portString ?? "80")
             try socket.write("CONNECT \(to) HTTP/1.0\r\n\r\n".bytes)
             try wait(socket)
@@ -97,14 +87,12 @@ open class Requester {
             if response.statusCode != 200 {
                 throw Request.Error.proxyConnectionFailed
             }
-            
         } else {
             var port: SocketSwift.Port = 80
             if let p = portString {
                 port = Port(p)!
             }
-            let address = try hostToIp(hostname)
-            try socket.connect(port: port, address: address)
+            try connect(socket, hostname: hostname, port: port)
         }
     }
     
