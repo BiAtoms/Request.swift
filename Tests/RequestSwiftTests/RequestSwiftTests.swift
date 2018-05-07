@@ -18,8 +18,8 @@ class RequestSwiftTests: XCTestCase {
         return a.client
     }
     
-    func testExample() {
-        let ex = expectation(description: "example")
+    func testHttp() {
+        let ex = expectation(description: "http")
         client.request("http://example.com/", headers: ["Accept": "text/html"]).response { response, error in
 
             XCTAssertNil(error, "error should be nil")
@@ -35,6 +35,25 @@ class RequestSwiftTests: XCTestCase {
         
         waitForExpectations()
     }
+    
+    func testHttps() {
+        let ex = expectation(description: "https")
+        client.request("https://example.com", headers: ["Accept": "text/html"]).response { response, error in
+            
+            XCTAssertNil(error, "error should be nil")
+            XCTAssertNotNil(response, "response should no be nil")
+            let response = response!
+            XCTAssertEqual(response.statusCode, 200)
+            XCTAssertEqual(response.reasonPhrase, "OK")
+            print(String(cString: response.body))
+            XCTAssert(String(cString: response.body).contains("<h1>Example Domain</h1>"))
+            
+            ex.fulfill()
+        }
+        
+        waitForExpectations()
+    }
+
     
     func testErrorTimeout() {
         let ex = expectation(description: "timeout")
@@ -113,16 +132,16 @@ class RequestSwiftTests: XCTestCase {
         
         XCTAssertEqual(writtenStringArray, requestStringArray)
     }
-
     
     static var allTests = [
-        ("testExample", testExample),
+        ("testHttp", testHttp),
+        ("testHttps", testHttps),
         ("testErrorTimeout", testErrorTimeout),
         ("testErrorDNS", testErrorDNS),
         ("testUrlEncoding", testUrlEncoding),
         ("testRequestPath", testErrorDNS),
         ("testRequestWriter", testRequestWriter),
-        ]
+    ]
 }
 
 extension XCTestCase {

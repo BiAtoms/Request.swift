@@ -51,6 +51,14 @@ open class Request {
         return (hostname, port)
     }
     
+    open var defaultPort: Port {
+        return isSecure ? 443 : 80
+    }
+    
+    open var isSecure: Bool {
+        return url.starts(with: "https")
+    }
+    
     private static func firstMatch(pattern: String, in string: String) -> NSTextCheckingResult {
         let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
         return regex.firstMatch(in: string, options: [], range: NSRange(location: 0, length: string.characters.count))!

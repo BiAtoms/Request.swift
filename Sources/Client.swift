@@ -24,34 +24,40 @@ open class Client {
     
     public init(baseUrl: String? = nil, usesSystemProxy: Bool = true) {
         self.baseUrl = baseUrl
+        self.usesSystemProxy = usesSystemProxy
+        #if os(Linux)
+            try! TLS.initialize()
+        #endif
     }
     
     //https://forums.developer.apple.com/thread/65416
     open static func getSystemProxy(for host: String) -> Proxy? {
         #if os(Linux) //CFNetworkCopySystemProxySettings hasn't been implemented. (see https://github.com/apple/swift-corelibs-foundation)
         #else
-        if let url = URL(string: host) {
-            if let proxySettingsUnmanaged = CFNetworkCopySystemProxySettings() {
-                let proxySettings = proxySettingsUnmanaged.takeRetainedValue()
-                let proxiesUnmanaged = CFNetworkCopyProxiesForURL(url as CFURL, proxySettings)
-                let proxies = proxiesUnmanaged.takeRetainedValue() as! [[String:AnyObject]]
-                
-                for dict in proxies {
-                    if let type = dict[kCFProxyTypeKey as String] {
-                        if type as! CFString  == kCFProxyTypeHTTP { //only http for now
-                            let host = dict[kCFProxyHostNameKey as String] as! String
-                            let port = (dict[kCFProxyPortNumberKey as String] as! NSNumber).intValue
-                            return (host, Port(port))
-                        }
-                    }
+            guard let url = URL(string: host),
+                let proxySettingsUnmanaged = CFNetworkCopySystemProxySettings()
+                else { return nil }
+            let proxySettings = proxySettingsUnmanaged.takeRetainedValue()
+            let proxiesUnmanaged = CFNetworkCopyProxiesForURL(url as CFURL, proxySettings)
+            let proxies = proxiesUnmanaged.takeRetainedValue() as! [[String: AnyObject]]
+            
+            func isValid(type: Any) -> Bool {
+                let t = type as! CFString
+                let isHttp = url.scheme == "http" && t == kCFProxyTypeHTTP
+                let isHttps = url.scheme == "https" && t == kCFProxyTypeHTTPS
+                return isHttp || isHttps
+            }
+            for dict in proxies {
+                guard let type = dict[kCFProxyTypeKey as String] else { continue }
+                if isValid(type: type) {
+                    let host = dict[kCFProxyHostNameKey as String] as! String
+                    let port = (dict[kCFProxyPortNumberKey as String] as! NSNumber).intValue
+                    return (host, Port(port))
                 }
-                
-            }   
-        }
+            }
         #endif
         return nil
     }
-    
     
     open func request(_ url: String, method: Request.Method = .get, parameters: Parameters? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: Headers? = nil)
         -> Requester

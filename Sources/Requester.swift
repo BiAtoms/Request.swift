@@ -80,7 +80,7 @@ open class Requester {
         let (hostname, portString) = request.hostnameAndPort
         if let proxy = self.proxy {
             try connect(socket, hostname: proxy.host, port: proxy.port)
-            let to = hostname + ":" + (portString ?? "80")
+            let to = hostname + ":" + (portString ?? "\(request.defaultPort)")
             try socket.write("CONNECT \(to) HTTP/1.0\r\n\r\n".bytes)
             try wait(socket)
             let response = try ResponseParser.parse(socket: socket)
@@ -88,11 +88,15 @@ open class Requester {
                 throw Request.Error.proxyConnectionFailed
             }
         } else {
-            var port: SocketSwift.Port = 80
+            var port: SocketSwift.Port = request.defaultPort
             if let p = portString {
                 port = Port(p)!
             }
             try connect(socket, hostname: hostname, port: port)
+        }
+        
+        if request.isSecure {
+            try socket.startTls(.init(peer: hostname))
         }
     }
     
