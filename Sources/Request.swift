@@ -35,15 +35,13 @@ open class Request {
     
     //https://tools.ietf.org/html/rfc7230#section-5.3.1
     open var path: String {
-        let match = Request.firstMatch(pattern: "^(?:http[s]?:\\/\\/)?[^:\\/\\s]+(?::[0-9]+)?(.*)$", in: self.url)
-        let url = NSString(string: self.url) //for NSString.substring
+        let match = Request.firstMatch(pattern: "^(?:http[s]?:\\/\\/)?[^:\\/\\s]+(?::[0-9]+)?(.*)$", in: url)
         let path = url.substring(with: match.range(at: 1))
        	return path.isEmpty ? "/" : path
     }
     
     open var hostnameAndPort: (hostname: String, port: String?) {
-        let match = Request.firstMatch(pattern: "^(?:http[s]?:\\/\\/)?([^:\\/\\s]+)(?::([0-9]+))?", in: self.url)
-        let url = NSString(string: self.url) //for NSString.substring
+        let match = Request.firstMatch(pattern: "^(?:http[s]?:\\/\\/)?([^:\\/\\s]+)(?::([0-9]+))?", in: url)
        	let hostname = url.substring(with: match.range(at: 1))
         var port: String? = nil
         if match.range(at: 2).location != NSNotFound {
@@ -56,5 +54,12 @@ open class Request {
     private static func firstMatch(pattern: String, in string: String) -> NSTextCheckingResult {
         let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
         return regex.firstMatch(in: string, options: [], range: NSRange(location: 0, length: string.characters.count))!
+    }
+}
+
+
+internal extension String {
+    func substring(with range: NSRange) -> String {
+        return NSString(string: self).substring(with: range)
     }
 }
