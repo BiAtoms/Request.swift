@@ -45,7 +45,6 @@ class RequestSwiftTests: XCTestCase {
             let response = response!
             XCTAssertEqual(response.statusCode, 200)
             XCTAssertEqual(response.reasonPhrase, "OK")
-            print(String(cString: response.body))
             XCTAssert(String(cString: response.body).contains("<h1>Example Domain</h1>"))
             
             ex.fulfill()
