@@ -52,7 +52,7 @@ class ResponseParser {
     internal func parseStatusLine() throws -> (version: String, statusCode: Int, reasonPhrase: String) {
         let requestLine = try socket.readLine()
         let parts = requestLine.split(" ", maxSplits: 2)
-        return (String(parts[0].characters.dropFirst("HTTP/".characters.count)), Int(parts[1])!, parts[2])
+        return (String(parts[0].dropFirst("HTTP/".count)), Int(parts[1])!, parts[2])
     }
     
     internal func parseHeaders() -> Headers {
@@ -74,7 +74,7 @@ class ResponseParser {
 
 internal extension String {
     func split(_ separator: Character, maxSplits: Int = Int.max, omittingEmptySubsequences: Bool = true) -> [String] {
-        return self.characters.split(separator: separator, maxSplits: maxSplits, omittingEmptySubsequences: omittingEmptySubsequences).map(String.init)
+        return split(separator: separator, maxSplits: maxSplits, omittingEmptySubsequences: omittingEmptySubsequences).map(String.init)
     }
     
     static var contentLength: String {
