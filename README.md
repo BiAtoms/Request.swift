@@ -1,7 +1,10 @@
-[![Platform Linux](https://img.shields.io/badge/platform-Linux-green.svg)](#)
+[![Platform Linux](https://img.shields.io/badge/platform-linux-brightgreen.svg)](#)
 [![Platform](https://img.shields.io/cocoapods/p/Request.swift.svg?style=flat)](https://github.com/BiAtoms/Request.swift)
 [![Cocoapods Compatible](https://img.shields.io/cocoapods/v/Request.swift.svg)](https://cocoapods.org/pods/Request.swift)
+[![Carthage Compatible](https://img.shields.io/badge/carthage-compatible-brightgreen.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![License](https://img.shields.io/github/license/BiAtoms/Request.swift.svg)](https://github.com/BiAtoms/Request.swift/blob/master/LICENSE)
 [![Build Status - Master](https://travis-ci.org/BiAtoms/Request.swift.svg?branch=master)](https://travis-ci.org/BiAtoms/Request.swift)
+
 
 # Request.swift
 
@@ -38,7 +41,7 @@ To integrate Request.swift into your Xcode project using CocoaPods, specify it i
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
 target '<Your Target Name>' do
-    pod 'Request.swift', '~> 2.1'
+    pod 'Request.swift', '~> 2.2'
 end
 ```
 
@@ -47,6 +50,26 @@ Then, run the following command:
 ```bash
 $ pod install
 ```
+
+### Carthage
+
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
+
+You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+To integrate Request.swift into your Xcode project using Carthage, specify it in your `Cartfile`:
+
+```ogdl
+github "BiAtoms/Request.swift" ~> 2.2
+```
+
+Run `carthage update` to build the framework and drag the built `RequestSwift.framework` into your Xcode project.
+
 ### Swift Package Manager
 
 The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler. It is in early development, but Request.swift does support its use on supported platforms. 
@@ -55,7 +78,7 @@ Once you have your Swift package set up, adding Request.swift as a dependency is
 
 ```swift
 dependencies: [
-    .Package(url: "https://github.com/BiAtoms/Request.swift.git", majorVersion: 2)
+    .package(url: "https://github.com/BiAtoms/Request.swift.git", from: "2.0.0")
 ]
 ```
 
