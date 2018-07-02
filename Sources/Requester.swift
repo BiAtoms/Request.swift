@@ -19,8 +19,9 @@ open class Requester {
     open var request: Request
     open var response: Response?
     open var error: Error?
-    open var handler: ResponseHandler? = nil
-    open var proxy: Proxy? = nil
+    open var handler: ResponseHandler?
+    open var proxy: Proxy?
+    open var allowSelfSigned = false
     
     public init(request: Request, queue: DispatchQueue, timeout: Int, proxy: Proxy?) {
         self.request = request
@@ -96,7 +97,7 @@ open class Requester {
         }
         
         if request.isSecure {
-            try socket.startTls(.init(peer: hostname))
+            try socket.startTls(.init(peer: hostname, allowSelfSigned: allowSelfSigned))
         }
     }
     
