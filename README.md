@@ -41,7 +41,7 @@ To integrate Request.swift into your Xcode project using CocoaPods, specify it i
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
 target '<Your Target Name>' do
-    pod 'Request.swift', '~> 2.2'
+pod 'Request.swift', '~> 2.3.0'
 end
 ```
 
@@ -65,7 +65,7 @@ $ brew install carthage
 To integrate Request.swift into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "BiAtoms/Request.swift" ~> 2.2
+github "BiAtoms/Request.swift" ~> 2.3.0
 ```
 
 Run `carthage update` to build the framework and drag the built `RequestSwift.framework` into your Xcode project.
@@ -78,7 +78,7 @@ Once you have your Swift package set up, adding Request.swift as a dependency is
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/BiAtoms/Request.swift.git", from: "2.0.0")
+    .package(url: "https://github.com/BiAtoms/Request.swift.git", from: "2.3.0")
 ]
 ```
 

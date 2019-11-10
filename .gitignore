@@ -166,3 +166,5 @@ playground.xcworkspace
 Pods
 Podfile.lock
 *.xcworkspace
+Package.resolved
+swiftpm

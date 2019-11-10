@@ -15,7 +15,7 @@ public typealias Headers = [String: String]
 
 open class Client {
     open var baseUrl: String?
-    open let queue = DispatchQueue(label: "com.biatoms.request-swift." + UUID().uuidString)
+    public let queue = DispatchQueue(label: "com.biatoms.request-swift." + UUID().uuidString)
     open var firesImmediately: Bool = true
     open var timeout: Int = 5000 // in ms
     
@@ -31,7 +31,7 @@ open class Client {
     }
     
     //https://forums.developer.apple.com/thread/65416
-    open static func getSystemProxy(for host: String) -> Proxy? {
+    public static func getSystemProxy(for host: String) -> Proxy? {
         #if os(Linux) //CFNetworkCopySystemProxySettings hasn't been implemented. (see https://github.com/apple/swift-corelibs-foundation)
         #else
             guard let url = URL(string: host),
